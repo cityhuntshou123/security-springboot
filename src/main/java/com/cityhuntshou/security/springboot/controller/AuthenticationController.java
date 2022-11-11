@@ -2,6 +2,7 @@ package com.cityhuntshou.security.springboot.controller;
 
 import com.cityhuntshou.security.springboot.model.AuthenticationRequest;
 import com.cityhuntshou.security.springboot.model.UserDto;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,29 +21,35 @@ import javax.servlet.http.HttpSession;
 public class AuthenticationController {
 
     @GetMapping(value = "/r/r1", produces = "text/plain;charset=utf-8")
+    @PreAuthorize("hasAuthority('p1')")
     public String r1(HttpSession session) {
-        String fullName = "";
-        UserDto userDto = (UserDto)session.getAttribute(UserDto.SESSION_USER_KEY);
-        if (userDto == null) {
-            fullName = "匿名";
-        } else {
-            fullName = userDto.getFullname();
-        }
+        String userName = "";
+        //UserDto userDto = (UserDto)session.getAttribute(UserDto.SESSION_USER_KEY);
+        //if (userDto == null) {
+        //    fullName = "匿名";
+        //} else {
+        //    fullName = userDto.getFullname();
+        //}
+        userName = getUserName();
 
-        return fullName + " 访问资源r1";
+        return userName + " 访问资源r1";
     }
 
-    @GetMapping(value = "/r/r2", produces = "text/plain;charset=utf-8")
-    public String r2(HttpSession session) {
-        String fullName = "";
-        UserDto userDto = (UserDto)session.getAttribute(UserDto.SESSION_USER_KEY);
-        if (userDto == null) {
-            fullName = "匿名";
-        } else {
-            fullName = userDto.getFullname();
-        }
 
-        return fullName + " 访问资源r2";
+    @GetMapping(value = "/r/r2", produces = "text/plain;charset=utf-8")
+    @PreAuthorize("hasAuthority('p2')")
+    public String r2(HttpSession session) {
+        String userName = "";
+        //UserDto userDto = (UserDto)session.getAttribute(UserDto.SESSION_USER_KEY);
+        //if (userDto == null) {
+        //    fullName = "匿名";
+        //} else {
+        //    fullName = userDto.getFullname();
+        //}
+
+        userName = getUserName();
+
+        return userName + " 访问资源r2";
     }
 
     @RequestMapping(value = "/login-success", produces = "text/plain;charset=utf-8")

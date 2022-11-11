@@ -1,5 +1,6 @@
 package com.cityhuntshou.security.springboot.service;
 
+import com.cityhuntshou.security.springboot.dao.PermissionDto;
 import com.cityhuntshou.security.springboot.dao.UserDao;
 import com.cityhuntshou.security.springboot.model.UserDto;
 import org.slf4j.Logger;
@@ -10,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author lipeitao
@@ -37,10 +40,15 @@ public class SpringDataUserDetailsService implements UserDetailsService {
             return null;
         }
 
+        // 由用户id查权限码列表
+        List<String> userPermissions = userDao.getUserPermissionByUserId(userByUserName.getId());
+        String[] permissionArray = new String[userPermissions.size()];
+        userPermissions.toArray(permissionArray);
+
         // userDto -> UserDetails
         UserDetails userDetails = User.withUsername(userByUserName.getUsername())
                 .password(userByUserName.getPassword())
-                .authorities("p1").build();
+                .authorities(permissionArray).build();
         return userDetails;
     }
 }
