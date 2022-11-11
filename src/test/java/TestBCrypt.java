@@ -14,7 +14,7 @@ public class TestBCrypt {
     @Test
     public void testBCrypt() {
         // 对密码加密
-        String hashpw = BCrypt.hashpw("123", BCrypt.gensalt());
+        String hashpw = BCrypt.hashpw("admin", BCrypt.gensalt());
         System.err.println("hashpw----------------------" + hashpw);
         System.out.println("$2a$10$2SPcpyoWwXqwtxr9nPyOsewMqwsyuzaj68u/TnFLxtnT2t8Rbc42i".equalsIgnoreCase(hashpw));
 

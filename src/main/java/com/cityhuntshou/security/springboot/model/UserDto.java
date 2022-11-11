@@ -2,6 +2,7 @@ package com.cityhuntshou.security.springboot.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
@@ -12,6 +13,7 @@ import java.util.Set;
  */
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserDto {
     public static final String SESSION_USER_KEY = "_user";
     private String id;

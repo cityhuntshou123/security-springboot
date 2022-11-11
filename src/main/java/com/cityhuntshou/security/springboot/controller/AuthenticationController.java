@@ -2,6 +2,9 @@ package com.cityhuntshou.security.springboot.controller;
 
 import com.cityhuntshou.security.springboot.model.AuthenticationRequest;
 import com.cityhuntshou.security.springboot.model.UserDto;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,7 +47,29 @@ public class AuthenticationController {
 
     @RequestMapping(value = "/login-success", produces = "text/plain;charset=utf-8")
     public String login(AuthenticationRequest request, HttpSession session) {
-        return "登录成功";
+        return getUserName() + " 登录成功";
     }
+
+    /**
+     * 获取当前登录用户的信息
+     * @return
+     */
+    private String getUserName() {
+        String userName = "";
+        // 当前认证通过的用户身份
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // 用户身份对象
+        Object principal = authentication.getPrincipal();
+        if (principal == null) {
+            userName = "匿名";
+        }
+
+        if (principal instanceof UserDetails) {
+            userName = ((UserDetails)principal).getUsername();
+        }
+
+        return userName;
+    }
+
 
 }
